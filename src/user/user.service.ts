@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { user, userDocument } from './schema/user.schema';
+import { Model } from 'mongoose';
+import { IRespCreateUser, IRespUser } from './interface';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(@InjectModel(user.name) private userModel: Model<userDocument>) {}
+
+  async getUserById(id: string) {
+    try {
+      const data = await this.userModel.findById(id).exec();
+      const resp = {
+        statusCode: HttpStatus.OK,
+        statusText: HttpStatus[HttpStatus.OK],
+        result: data,
+      };
+      return resp;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async createUser(req: CreateUserDto) {
+    try {
+      const data = new this.userModel(req);
+      data.displayName = `${req.firstName} ${req.lastName}`;
+      const response: IRespUser = await data.save();
+      const resp: IRespCreateUser = {
+        statusCode: HttpStatus.OK,
+        statusText: HttpStatus[HttpStatus.OK],
+        result: response,
+      };
+      return resp;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
