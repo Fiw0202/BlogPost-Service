@@ -25,6 +25,14 @@ export class UserService {
 
   async createUser(req: CreateUserDto) {
     try {
+      const user = await this.userModel.findOne({ userName: req.userName });
+      if (user) {
+        return {
+          statusCode: HttpStatus.CONFLICT,
+          statusText: HttpStatus[HttpStatus.CONFLICT],
+          message: `username ${req.userName} ถูกใช้งานเเล้ว`,
+        };
+      }
       const data = new this.userModel(req);
       data.displayName = `${req.firstName} ${req.lastName}`;
       const response: IRespUser = await data.save();
