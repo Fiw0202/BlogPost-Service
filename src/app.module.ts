@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { MasterPostModule } from './master-post/master-post.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { UserModule } from './user/user.module';
       'mongodb+srv://fiw0202:ofsnl1qQLv1g6wV0@blogpostcluster.yabjhhf.mongodb.net/BlogPostDB',
     ),
     UserModule,
+    MasterPostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
