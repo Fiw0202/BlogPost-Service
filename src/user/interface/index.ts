@@ -8,6 +8,7 @@ export interface IRespCreateUser {
 
 export interface IRespUser {
   _id?: string | unknown;
+  userName: string;
   firstName: string;
   lastName: string;
   displayName: string;

@@ -8,6 +8,9 @@ export type userDocument = user & Document;
 @Schema({ collection: 'users' })
 export class user implements IRespUser {
   @Prop()
+  userName: string;
+
+  @Prop()
   firstName: string;
 
   @Prop()
