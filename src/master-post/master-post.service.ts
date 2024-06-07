@@ -36,11 +36,26 @@ export class MasterPostService {
   async getPostById(id: string) {
     try {
       const data = await this.masterPostModel.findById(id);
-      const response: IRespMasterPost = await data.save();
       const resp: IRespHTTPMasterPost = {
         statusCode: HttpStatus.OK,
         statusText: HttpStatus[HttpStatus.OK],
-        result: response,
+        result: data,
+      };
+      return resp;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getPostByUserId(id: string) {
+    try {
+      const data: IRespMasterPost[] = await this.masterPostModel.find({
+        userId: id,
+      });
+      const resp: IRespALLMasterPost = {
+        statusCode: HttpStatus.OK,
+        statusText: HttpStatus[HttpStatus.OK],
+        result: data,
       };
       return resp;
     } catch (error) {

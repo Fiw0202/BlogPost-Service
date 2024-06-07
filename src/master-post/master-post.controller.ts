@@ -27,6 +27,11 @@ export class MasterPostController {
     return this.masterPostService.getPostById(id);
   }
 
+  @Get('user/:id')
+  getPostByUserId(@Param('id') id: string) {
+    return this.masterPostService.getPostByUserId(id);
+  }
+
   @Post()
   createPost(@Body() req: CreateMasterPostDto) {
     return this.masterPostService.createPost(req);
