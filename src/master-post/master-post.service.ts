@@ -21,7 +21,9 @@ export class MasterPostService {
 
   async getAllPost() {
     try {
-      const data: IRespMasterPost[] = await this.masterPostModel.find();
+      const data: IRespMasterPost[] = await this.masterPostModel
+        .find()
+        .sort({ createDate: -1 });
       const resp: IRespALLMasterPost = {
         statusCode: HttpStatus.OK,
         statusText: HttpStatus[HttpStatus.OK],
@@ -49,9 +51,11 @@ export class MasterPostService {
 
   async getPostByUserId(id: string) {
     try {
-      const data: IRespMasterPost[] = await this.masterPostModel.find({
-        userId: id,
-      });
+      const data: IRespMasterPost[] = await this.masterPostModel
+        .find({
+          userId: id,
+        })
+        .sort({ createDate: -1 });
       const resp: IRespALLMasterPost = {
         statusCode: HttpStatus.OK,
         statusText: HttpStatus[HttpStatus.OK],
