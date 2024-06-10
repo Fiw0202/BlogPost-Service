@@ -44,6 +44,6 @@ export class MasterPostController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.masterPostService.remove(+id);
+    return this.masterPostService.deletePost(id);
   }
 }

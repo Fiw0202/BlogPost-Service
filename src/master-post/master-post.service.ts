@@ -104,7 +104,20 @@ export class MasterPostService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} masterPost`;
+  async deletePost(id: string) {
+    try {
+      const result = await this.masterPostModel.findByIdAndDelete(id);
+      if (!result) {
+        throw new Error(`Post id ${id} not found`);
+      }
+      const resp: IRespHTTPMasterPost = {
+        statusCode: HttpStatus.OK,
+        statusText: HttpStatus[HttpStatus.OK],
+        result: result,
+      };
+      return resp;
+    } catch (error) {
+      throw error;
+    }
   }
 }
