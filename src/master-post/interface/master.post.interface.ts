@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 export interface IRespHTTPMasterPost {
   statusCode: HttpStatus;
   statusText: string;
-  result: IRespMasterPost;
+  result: IRespMasterPost | string;
 }
 
 export interface IRespALLMasterPost {

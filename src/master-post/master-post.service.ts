@@ -3,7 +3,7 @@ import { CreateMasterPostDto } from './dto/create-master-post.dto';
 import { UpdateMasterPostDto } from './dto/update-master-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { masterPost, masterPostDocument } from './schema/master.post.schema';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import {
   IRespALLMasterPost,
   IRespHTTPMasterPost,
@@ -106,9 +106,23 @@ export class MasterPostService {
 
   async deletePost(id: string) {
     try {
+      if (!isValidObjectId(id)) {
+        const resp: IRespHTTPMasterPost = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          statusText: HttpStatus[HttpStatus.BAD_REQUEST],
+          result: `Invalid post id ${id}`,
+        };
+        return resp;
+      }
+
       const result = await this.masterPostModel.findByIdAndDelete(id);
       if (!result) {
-        throw new Error(`Post id ${id} not found`);
+        const resp: IRespHTTPMasterPost = {
+          statusCode: HttpStatus.BAD_REQUEST,
+          statusText: HttpStatus[HttpStatus.BAD_REQUEST],
+          result: `Post id ${id} not found`,
+        };
+        return resp;
       }
       const resp: IRespHTTPMasterPost = {
         statusCode: HttpStatus.OK,
